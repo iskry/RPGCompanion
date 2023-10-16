@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import MessageDisplay from "./components/MessageSubmission";
 import Messages from "./components/Messages";
@@ -6,11 +6,13 @@ import Messages from "./components/Messages";
 const theme = createTheme();
 
 function App() {
+  const [messages, setMessages] = useState(["Sample Message"]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Messages />
-      <MessageDisplay />
+      <Messages messages={messages} />
+      <MessageDisplay messages={messages} setMessages={setMessages} />
     </ThemeProvider>
   );
 }

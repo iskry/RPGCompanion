@@ -3,20 +3,20 @@ import {
   Button,
   TextField,
   List,
+  ListItemText,
   ListItem,
   Box,
   Container,
 } from "@mui/material";
 
-export default function Messages() {
+export default function Messages({ messages }) {
   return (
-    <Container>
-      <Box component="div" marginBottom={2}>
-        <List>
-          {/* Messages will go here as ListItems */}
-          <ListItem>Sample Message</ListItem>
-        </List>
-      </Box>
-    </Container>
+    <List>
+      {messages.map((message, index) => (
+        <ListItem key={index}>
+          <ListItemText primary={message} />
+        </ListItem>
+      ))}
+    </List>
   );
 }
