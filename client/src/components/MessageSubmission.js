@@ -1,26 +1,33 @@
-import React from "react";
-import {
-  Button,
-  TextField,
-  List,
-  ListItem,
-  Box,
-  Container,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Button, TextField, Container } from "@mui/material";
+import { useSocket, useEmitEvent } from "./useSocket";
 
 export default function MessageSubmission({ messages, setMessages }) {
-  const [messageText, setMessageText] = React.useState("");
+  const [messageText, setMessageText] = useState("");
 
   const handleTextChange = (e) => {
     setMessageText(e.target.value);
   };
 
+  const emitMessage = useEmitEvent("chat message");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMessages([...messages, messageText]);
-    console.log("Message submitted: ", messageText);
-    // Handle form submission
+    if (messageText) {
+      emitMessage(messageText); // Emits the message to the server
+      setMessages([...messages, messageText]); // Immediately updates local state with the new message
+      console.log("Message submitted: ", messageText);
+      resetInput();
+    }
   };
+
+  const resetInput = () => {
+    setMessageText("");
+  };
+
+  useSocket("chat message", (msg) => {
+    setMessages((prevMessages) => [...prevMessages, msg]);
+  });
 
   return (
     <Container>
